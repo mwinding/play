@@ -21,6 +21,22 @@ locations = [geolocator.geocode(city) for city in apps.search_term] # a bit slow
 apps['latitude'] = [location.latitude for location in locations]
 apps['longitude'] = [location.longitude for location in locations]
 
+colors = []
+icons = []
+for x in apps.loc[:, 'Status']:
+    if(x=='submitted'):
+        colors.append('cadetblue')
+        icons.append('file')
+    if(x=='shortlist'):
+        colors.append('green')
+        icons.append('thumbs-up')
+    if(x=='rejected'):
+        colors.append('red')  
+        icons.append('thumbs-down')
+
+apps['color'] = colors
+apps['icon'] = icons
+
 # %%
 # set up map
 
@@ -33,7 +49,10 @@ middle_lat = (max_lat + min_lat)/2
 middle_lon = (max_lon + min_lon)/2
 
 map_US = folium.Map(location=[middle_lat, middle_lon], zoom_start=3.5)
-[folium.Marker([apps.loc[i, 'latitude'], apps.loc[i, 'longitude']], popup=apps.loc[i, 'Institute'] + ', ' + apps.loc[i, 'Department']).add_to(map_US) for i in apps.index]
+[folium.Marker([apps.loc[i, 'latitude'], apps.loc[i, 'longitude']], 
+                popup=apps.loc[i, 'Institute'] + ', ' + apps.loc[i, 'Department'],
+                icon=folium.Icon(color=apps.loc[i, 'color'], icon=apps.loc[i, 'icon'])                           
+            ).add_to(map_US) for i in apps.index]
 map_US
 map_US.save('outputs/submitted_apps.html')
 
