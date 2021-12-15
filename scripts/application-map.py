@@ -39,6 +39,7 @@ apps['icon'] = icons
 
 # %%
 # set up map
+from folium.features import DivIcon
 
 max_lat = max(apps.latitude)
 min_lat = min(apps.latitude)
@@ -53,6 +54,18 @@ map_US = folium.Map(location=[middle_lat, middle_lon], zoom_start=3.5)
                 popup=apps.loc[i, 'Institute'] + ', ' + apps.loc[i, 'Department'],
                 icon=folium.Icon(color=apps.loc[i, 'color'], icon=apps.loc[i, 'icon'])                           
             ).add_to(map_US) for i in apps.index]
+
+
+# add text with summary stats
+canada = geolocator.geocode('Seattle, Washington')
+short = 'shortlist'
+reject = 'rejected'
+folium.Marker([canada.latitude, canada.longitude],
+                icon=DivIcon(
+                    icon_size=(1000,50),
+                    icon_anchor=(0,0),
+                    html=f'<div style="font-size: 12pt">Applications: {len(apps)}, Short-listed: {sum(apps.Status==short)}, Rejected: {sum(apps.Status==reject)}',
+                )).add_to(map_US)
 map_US
 map_US.save('outputs/submitted_apps.html')
 
