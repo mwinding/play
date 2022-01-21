@@ -16,7 +16,7 @@ apps['search_term'] = list(map(
 
 geolocator = Nominatim(user_agent='hobby_use')
 locations = [geolocator.geocode(city) for city in apps.search_term] # a bit slow
-locations[22] = geolocator.geocode('77 Massachusetts Ave Cambridge, MA USA') # this one fails for some reason in list comprehension
+#locations[22] = geolocator.geocode('77 Massachusetts Ave Cambridge, MA USA') # this one fails for some reason in list comprehension
 
 # add lat, long to cities
 apps['latitude'] = [location.latitude for location in locations]
@@ -58,7 +58,7 @@ map_US = folium.Map(location=[middle_lat, middle_lon], zoom_start=3.5)
 
 
 # add text with summary stats
-canada = geolocator.geocode('Seattle, Washington')
+canada = geolocator.geocode('Portland, Oregon')
 short = 'shortlist'
 reject = 'rejected'
 folium.Marker([canada.latitude, canada.longitude],
