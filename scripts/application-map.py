@@ -1,8 +1,5 @@
 # %%
 
-import os
-os.chdir(os.path.dirname(os.getcwd())) # make directory one step up the current directory
-
 import folium
 from geopy.geocoders import Nominatim
 import pandas as pd
