@@ -53,7 +53,6 @@ map_US = folium.Map(location=[middle_lat, middle_lon], zoom_start=3.5)
                 icon=folium.Icon(color=apps.loc[i, 'color'], icon=apps.loc[i, 'icon'])                           
             ).add_to(map_US) for i in apps.index]
 
-
 # add text with summary stats
 canada = geolocator.geocode('Portland, Oregon')
 short = 'shortlist'
