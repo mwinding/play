@@ -1,34 +1,46 @@
 from tree import RGBXmasTree
 from time import sleep
 import random
+from colorzero import Color
 
 tree = RGBXmasTree()
 tree.brightness = 0.05
 
-def random_color(max_intensity):
-    first = random.randint(0, max_intensity)
-    second = random.randint(0, max_intensity - first)
-    third = max_intensity - first - second
-    rand_nums = [first, second, third]
+# defined between [0,100], converted to [0,1]
+# trying to convert yrb to rgb?
+def random_color(min):
+    first = random.randint(min, 100)
+    second = random.randint(0, 100 - first)
+    third = 100 - first - second
+    rand_nums = [first/100, second/100, third/100]
+
+    y = random.choice(rand_nums)
+    rand_nums.remove(y)
 
     r = random.choice(rand_nums)
     rand_nums.remove(r)
 
-    g = random.choice(rand_nums)
-    rand_nums.remove(g)
-
     b = random.choice(rand_nums)
-    print([r,g,b])
+
+    g = y - r
+    if(g<0): g=0
+
+    print(f'[y,r,b] = {y},{r},{b}; [r,g,b] = {r},{g},{b}')
 
     return (r, g, b)
 
-max_intensity = 255
+def random_color_run(min_init):
+    try:
+        while True:
+            tree_pixels = list(range(0,25))
+            for i in range(len(tree_pixels)):
+                pixel = random.choice(tree_pixels)
+                tree_pixels.remove(pixel)
 
-try:
-    while True:
-        pixel = random.choice(tree)
-        pixel.color = random_color(max_intensity=max_intensity)
+                tree[pixel].color = random_color(min=min_init)
 
-except KeyboardInterrupt:
-    tree.color = (0,0,0)
-    tree.close()
+    except KeyboardInterrupt:
+        tree.color = (0,0,0)
+        tree.close()
+
+random_color_run(min_init=75)
