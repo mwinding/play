@@ -44,7 +44,7 @@ try:
     while True:
         for color in colors:
             tree.color = color
-            glow(tree, max_light, min_light, interval)
+            glow(tree, max_light, min_light, interval, sleep_time)
 except KeyboardInterrupt:
     tree.color = (0,0,0)
     tree.close()
